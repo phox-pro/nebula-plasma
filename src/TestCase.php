@@ -12,8 +12,6 @@ class TestCase extends AtomTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $app = make(Application::class);
-        container()->singleton($app);
-        container()->singleton($app, AtomApplication::class);
+        make(Application::class);
     }
 }

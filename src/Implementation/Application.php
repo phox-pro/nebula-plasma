@@ -4,6 +4,7 @@ namespace Phox\Nebula\Plasma\Implementation;
 
 use Phox\Nebula\Atom\Implementation\Application as AtomApplication;
 use Phox\Nebula\Atom\Implementation\Exceptions\StateExistsException;
+use Phox\Nebula\Atom\Notion\Interfaces\IStateContainer;
 use Phox\Nebula\Plasma\Notion\Abstracts\Star;
 
 class Application extends AtomApplication 
@@ -14,11 +15,10 @@ class Application extends AtomApplication
 
 	public function __construct()
 	{
-        try {
-            call_user_func_array([$this, 'parent::__construct'], func_get_args());
-        } catch (StateExistsException $e) {
-            //
-        }
+        $atomApplication = get(AtomApplication::class);
+        $this->providers = $atomApplication->getProviders();
+        container()->singleton($this);
+        container()->singleton($this, AtomApplication::class);
     }
     
     public function setStar(Star $star)
