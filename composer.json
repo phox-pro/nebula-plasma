@@ -1,0 +1,19 @@
+{
+    "name": "phox-pro/nebula-plasma",
+    "description": "Advanced core library for Nebula framework",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Phox\\Nebula\\Plasma\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.4",
+        "phox-pro/nebula-atom": "dev-develop"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        }
+    }
+}
