@@ -9,7 +9,7 @@
     },
     "require": {
         "php": "^7.4",
-        "phox-pro/nebula-atom": "dev-develop"
+        "phox-pro/nebula-atom": "dev-master"
     },
     "config": {
         "preferred-install": {
