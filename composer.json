@@ -7,9 +7,17 @@
             "Phox\\Nebula\\Plasma\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "Tests/"
+        }
+    },
     "require": {
         "php": "^7.4",
-        "phox-pro/nebula-atom": "dev-develop"
+        "phox-pro/nebula-atom": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
     },
     "config": {
         "preferred-install": {
