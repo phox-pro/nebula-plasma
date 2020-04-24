@@ -29,5 +29,9 @@ jobs:
       if: steps.composer.outputs.cache-hit != 'true'
       run: composer install
 
+    - name: Update cached dependencies
+      if: steps.composer.outputs.cache-hit == 'true'
+      run: composer update
+
     - name: Run tests
       run: vendor/bin/phpunit
