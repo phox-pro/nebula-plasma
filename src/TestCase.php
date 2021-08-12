@@ -3,15 +3,13 @@
 namespace Phox\Nebula\Plasma;
 
 use Phox\Nebula\Atom\TestCase as AtomTestCase;
-use Phox\Nebula\Plasma\Implementation\Application;
-use Phox\Nebula\Atom\Implementation\Application as AtomApplication;
-use Phox\Nebula\Atom\Implementation\StateContainer;
 
 class TestCase extends AtomTestCase 
 {
     protected function setUp(): void
     {
         parent::setUp();
-        get(AtomApplication::class)->addProvider(make(PlasmaProvider::class));
+
+        $this->nebula->addProvider(new PlasmaProvider());
     }
 }
