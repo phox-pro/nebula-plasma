@@ -12,29 +12,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: '7.4'
-        
-    - name: Validate composer.json and composer.lock
-      run: composer validate
-      
-    - name: Cache PHP dependencies
-      id: composer
-      uses: actions/cache@v1
-      with:
-        path: vendor
-        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
-      
-    - name: Install dependencies
-      if: steps.composer.outputs.cache-hit != 'true'
-      run: composer install
-      
-    - name: Update cached dependencies
-      if: steps.composer.outputs.cache-hit == 'true'
-      run: composer update
+      - uses: actions/checkout@v2
 
-    - name: Run tests
-      run: vendor/bin/phpunit
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Cache PHP dependencies
+        id: composer
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install dependencies
+        if: steps.composer.outputs.cache-hit != 'true'
+        run: composer install
+
+      - name: Update cached dependencies
+        if: steps.composer.outputs.cache-hit == 'true'
+        run: composer update
+
+      - name: Run tests
+        run: vendor/bin/phpunit
