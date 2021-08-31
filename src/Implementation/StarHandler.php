@@ -31,6 +31,17 @@ class StarHandler
             throw new StarActionException();
         }
 
-        $this->eStarCompleted->notify($container->call($callback));
+        $resolver->setOutput($container->call($callback));
+
+        $this->eStarCompleted->notify();
+    }
+
+    public function render(StarResolver $resolver): void
+    {
+        $output = $resolver->getOutput();
+
+        $result = (string)$output;
+
+        echo $result;
     }
 }

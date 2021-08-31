@@ -8,6 +8,7 @@ class StarResolver
 {
     private ?Star $star = null;
     private ?string $action = null;
+    private mixed $output = null;
 
     public function getStar(): ?Star
     {
@@ -27,5 +28,15 @@ class StarResolver
     public function setAction(?string $action): void
     {
         $this->action = $action;
+    }
+
+    public function getOutput(): mixed
+    {
+        return $this->output;
+    }
+
+    public function setOutput(mixed $output): void
+    {
+        $this->output = $output;
     }
 }

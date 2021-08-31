@@ -3,7 +3,10 @@
 namespace Tests\Unit;
 
 use Phox\Nebula\Atom\Implementation\Exceptions\AnotherInjectionExists;
+use Phox\Nebula\Atom\Implementation\StateContainer;
+use Phox\Nebula\Atom\Notion\Interfaces\IStateContainer;
 use Phox\Nebula\Plasma\Implementation\StarResolver;
+use Phox\Nebula\Plasma\Implementation\States\StarState;
 use Phox\Nebula\Plasma\TestCase;
 use Phox\Nebula\Plasma\Notion\Abstracts\Star;
 
@@ -12,19 +15,24 @@ class ApplicationTest extends TestCase
     /**
      * @throws AnotherInjectionExists
      */
-    public function testCanRenderOutput(): void
+    public function testStarStateOutput(): void
     {
-        $output = 'Test Star at testCanRenderOutput';
+        $output = 'testStarStateOutput';
 
         $star = $this->getMockBuilder(Star::class)
-            ->addMethods(['init'])
+            ->addMethods(['__invoke'])
             ->getMock();
-        $star->method('init')->willReturn($output);
+        $star->method('__invoke')->willReturn($output);
 
         $starResolver = $this->container()->get(StarResolver::class);
-
         $starResolver->setStar($star);
-        $starResolver->setAction('init');
+
+        $starState = $this->container()
+            ->get(IStateContainer::class)
+            ->getState(StarState::class);
+
+        $starState->listen(fn(StarResolver $resolver) =>
+        $this->assertEquals($output, $resolver->getOutput()));
 
         $this->expectOutputString($output);
 
