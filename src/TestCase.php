@@ -2,6 +2,7 @@
 
 namespace Phox\Nebula\Plasma;
 
+use Phox\Nebula\Atom\Implementation\ProvidersContainer;
 use Phox\Nebula\Atom\TestCase as AtomTestCase;
 
 class TestCase extends AtomTestCase 
@@ -10,6 +11,7 @@ class TestCase extends AtomTestCase
     {
         parent::setUp();
 
-        $this->nebula->addProvider(new PlasmaProvider());
+        $this->container()->get(ProvidersContainer::class)
+            ->addProvider(new PlasmaProvider());
     }
 }

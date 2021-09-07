@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use Phox\Nebula\Atom\Implementation\Exceptions\AnotherInjectionExists;
 use Phox\Nebula\Atom\Implementation\StateContainer;
-use Phox\Nebula\Atom\Notion\Interfaces\IStateContainer;
 use Phox\Nebula\Plasma\Implementation\StarResolver;
 use Phox\Nebula\Plasma\Implementation\States\StarState;
 use Phox\Nebula\Plasma\TestCase;
@@ -28,7 +27,7 @@ class ApplicationTest extends TestCase
         $starResolver->setStar($star);
 
         $starState = $this->container()
-            ->get(IStateContainer::class)
+            ->get(StateContainer::class)
             ->getState(StarState::class);
 
         $starState->listen(fn(StarResolver $resolver) =>
