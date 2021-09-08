@@ -37,4 +37,25 @@ class ApplicationTest extends TestCase
 
         $this->nebula->run();
     }
+
+    public function testStarActionWithParams(): void
+    {
+        $star = new class($this) extends Star {
+            public function __construct(private ApplicationTest $test) {}
+
+            public function __invoke($id, string $name) {
+                $this->test->assertEquals(5, $id);
+                $this->test->assertEquals('John', $name);
+            }
+        };
+
+        $starResolver = $this->container()->get(StarResolver::class);
+        $starResolver->setStar($star);
+        $starResolver->setParams([
+            'name' => 'John',
+            'id' => 5,
+        ]);
+
+        $this->nebula->run();
+    }
 }
