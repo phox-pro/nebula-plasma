@@ -2,32 +2,27 @@
 
 namespace Phox\Nebula\Plasma;
 
-use Phox\Nebula\Atom\Implementation\StateContainer;
-use Phox\Nebula\Atom\Notion\Abstracts\Provider;
-use Phox\Nebula\Atom\Notion\Interfaces\IDependencyInjection;
-use Phox\Nebula\Atom\Notion\Interfaces\IStateContainer;
-use Phox\Nebula\Plasma\Implementation\StarHandler;
-use Phox\Nebula\Plasma\Implementation\StarResolver;
-use Phox\Nebula\Plasma\Implementation\States\RenderState;
-use Phox\Nebula\Plasma\Implementation\States\StarState;
+use Phox\Nebula\Atom\Implementation\Services\ServiceContainerAccess;
+use Phox\Nebula\Atom\Notion\IProvider;
+use Phox\Nebula\Atom\Notion\IStateContainer;
+use Phox\Nebula\Plasma\Implementation\ActionHandler;
+use Phox\Nebula\Plasma\Implementation\ActionResolver;
+use Phox\Nebula\Plasma\Implementation\States\ActionState;
+use Phox\Nebula\Plasma\Notion\IActionHandler;
+use Phox\Nebula\Plasma\Notion\IActionResolver;
 
-class PlasmaProvider extends Provider 
+class PlasmaProvider implements IProvider
 {
-    public function __invoke(IStateContainer $stateContainer, IDependencyInjection $dependencyInjection): void
+    use ServiceContainerAccess;
+
+    public function register(): void
     {
-        $dependencyInjection->singleton(StarResolver::class);
-        $dependencyInjection->singleton(StarHandler::class);
+        $this->container()->singleton(new ActionResolver(), IActionResolver::class);
+        $this->container()->singleton(new ActionHandler(), IActionHandler::class);
+        $this->container()->get(IStateContainer::class)->add(new ActionState());
 
-        $this->initStates($stateContainer);
-    }
-
-    private function initStates(IStateContainer $stateContainer): void
-    {
-        $starState = new StarState();
-        $starState->listen(
-            fn(StarResolver $starResolver, StarHandler $starHandler) => $starHandler->handle($starResolver)
-        );
-
-        $stateContainer->add($starState);
+        ActionState::listen(function (ActionState $state) {
+            $this->container()->get(IActionHandler::class)->handle();
+        });
     }
 }
