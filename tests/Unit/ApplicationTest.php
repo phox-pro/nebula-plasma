@@ -5,8 +5,6 @@ namespace Tests\Unit;
 use Phox\Nebula\Atom\Implementation\Application;
 use Phox\Nebula\Atom\Implementation\InitState;
 use Phox\Nebula\Atom\Implementation\Services\ServiceContainerFacade;
-use Phox\Nebula\Atom\Notion\IProviderContainer;
-use Phox\Nebula\Atom\Notion\IStateContainer;
 use Phox\Nebula\Plasma\Implementation\ActionResults\StringActionResult;
 use Phox\Nebula\Plasma\Implementation\States\ActionState;
 use Phox\Nebula\Plasma\Notion\IAction;
@@ -21,21 +19,20 @@ class ApplicationTest extends TestCase
     {
         $app = new Application();
 
-        $foundProvider = false;
-
-        foreach (ServiceContainerFacade::get(IProviderContainer::class)->getProviders() as $provider) {
-            if ($provider instanceof PlasmaProvider) {
-                $foundProvider = true;
-            }
-        }
-
-        $this->assertTrue($foundProvider);
+        $this->assertProviderExists(PlasmaProvider::class);
 
         $app->run();
 
-        $this->assertNotNull(
-            ServiceContainerFacade::get(IStateContainer::class)->getState(ActionState::class)
-        );
+        $this->assertStateExists(ActionState::class);
+    }
+
+    public function testSateSuccessRun(): void
+    {
+        $app = new Application();
+
+        $this->assertEventWillFire(ActionState::class);
+
+        $app->run();
     }
 
     /**
